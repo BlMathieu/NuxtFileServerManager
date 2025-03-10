@@ -5,7 +5,6 @@ export default defineEventHandler((event) => {
         if (event.node.req.method != 'GET') throw new Error('Wrong request method !');
         const query = getQuery(event);
         const folderPath = query.path?.toString() || "";
-        console.log(folderPath);
 
         const securedPath = SecurePath(folderPath);
 

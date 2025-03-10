@@ -2,7 +2,7 @@ import type { Item } from "~/server/responses/IFolderResponse";
 import FolderService from "../services/FolderService";
 import type IFolderResponse from "~/server/responses/IFolderResponse";
 import FileService from "../services/FileService";
-import axios from "axios";
+import type IFileResponse from "~/server/responses/IFileResponse";
 
 const folderService = new FolderService();
 const fileService = new FileService();
@@ -11,11 +11,20 @@ export const useDirectoryStore = defineStore('directory', () => {
     const oldPath: Ref<string> = ref('');
     const folderItems: Ref<Item[]> = ref([]);
 
-    async function findItems(currentFolderPath: string) {
+    async function findItems(currentFolderPath: string): Promise<void> {
         const response = await folderService.get(currentFolderPath) as IFolderResponse;
         folderItems.value = response.items;
         oldPath.value = response.folderPath;
     }
+
+    async function getFileContent(folderPath: string): Promise<string> {
+        const response = await fileService.get(`${oldPath.value}/${folderPath}`) as IFileResponse;
+        return response.content;
+    }
+    async function saveFileContent(content: string): Promise<void> {
+        //fileService.save(content)
+    }
+
     async function deleteItem(itemPath: string, isFolder: boolean) {
         if (isFolder) await folderService.delete(`${oldPath.value}/${itemPath}`);
         else await fileService.delete(`${oldPath.value}/${itemPath}`);

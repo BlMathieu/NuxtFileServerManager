@@ -37,7 +37,7 @@ const openFolder = async (isFolder: boolean, name: string) => {
             }">
               {{ item.name }}
             </p>
-            <button
+            <button class="bt-remove"
               @click="async () => { await directoryStore.deleteItem(item.name, item.isFolder); }">Supprimer</button>
           </div>
         </li>
@@ -58,7 +58,7 @@ ul {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
   font-size: 25px;
-  height:50vh;
+  height: 50vh;
   overflow-y: scroll;
 }
 

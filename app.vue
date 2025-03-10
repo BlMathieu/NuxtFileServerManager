@@ -48,30 +48,35 @@ html {
   background-repeat: no-repeat;
 }
 
-form {
-  display: flex;
-  justify-content: center;
-  margin: 1em;
-}
-
-form input[type="text"] {
-  border-radius: 0.25em;
-  width: 25%;
-  height: 30px;
-  font-size: 25px;
-  padding: 0.5em;
-}
-
-form button {
-  height: 60px;
-  width: 50px;
-}
-
-form button img {
-  width: 15px;
-}
-
 .files-container {
   border: 1px solid black;
+}
+
+.bt-add {
+  margin: 1em;
+  padding: 0.5em;
+  background-color: green;
+  border: none;
+  color: white;
+  font-weight: bolder;
+}
+
+.bt-remove {
+  margin: 1em;
+  padding: 0.5em;
+  background-color: red;
+  border: none;
+  color: white;
+  font-weight: bolder;
+}
+
+.bt-add:hover,
+.bt-remove:hover {
+  background-color: rgb(203, 197, 197);
+}
+
+.bt-add:active,
+.bt-remove:active {
+  scale: 1.1;
 }
 </style>

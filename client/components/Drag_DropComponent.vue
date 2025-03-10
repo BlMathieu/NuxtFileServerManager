@@ -23,6 +23,7 @@ const sendFiles = async () => {
     arrayFiles.forEach(file => {
         formData.append('files', file)
     })
+
     await axios.post("/api/upload", formData, {
         onUploadProgress: (progressEvent: any) => {
             const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
@@ -31,6 +32,7 @@ const sendFiles = async () => {
     }).catch((err) => {
         console.error(err);
     });
+
     directoryStore.findItems(directoryStore.oldPath);
     files.value = [];
 }
@@ -45,13 +47,13 @@ const sendFiles = async () => {
             <div v-for="file in files">
                 <img src="/client/assets/upload.svg" />
                 <p class="file-name">{{ file.name }}</p>
-                <button @click="() => { deleteFile(file) }">Supprimer</button>
+                <button class="bt-remove" @click="() => { deleteFile(file) }">Supprimer</button>
             </div>
         </div>
         <div>
             <div>
                 <h3>Fichiers à télécharger</h3>
-                <button @click="sendFiles">Envoyer</button>
+                <button class="bt-add" @click="sendFiles">Envoyer</button>
             </div>
             <div>
                 <progress :value="progressBar" max="100"></progress>

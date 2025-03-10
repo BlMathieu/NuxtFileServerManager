@@ -4,16 +4,17 @@ const windowStore = useWindowStore();
 </script>
 
 <template>
-<section>
-    <div>
-        <button @click="windowStore.setCreateFileWindow(true)">Creer un fichier</button>
-        <button @click="windowStore.setCreateFolderWindow(true)">Creer un dossier</button>
-    </div>
-</section>    
+    <section>
+        <div>
+            <button class="bt-add" @click="windowStore.setCreateFileWindow(true)">Creer un fichier</button>
+            <button class="bt-add" @click="windowStore.setCreateFolderWindow(true)">Creer un dossier</button>
+        </div>
+    </section>
 </template>
 
 <style scoped>
-    div{
-        display: flex;
-    }
+div {
+    display: flex;
+    justify-content: center;
+}
 </style>

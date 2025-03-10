@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import AbstractDirectory from './AbstractDirectory';
+import type IFileResponse from '../responses/IFileResponse';
 
 export default class FileService extends AbstractDirectory {
     constructor() { super(); }
@@ -10,5 +11,9 @@ export default class FileService extends AbstractDirectory {
     }
     public override delete(url: string): void {
         fs.unlinkSync(url);
+    }
+    public override get(path: string): IFileResponse {
+        const data = fs.readFileSync(path).toString();
+        return { content: data };
     }
 }
