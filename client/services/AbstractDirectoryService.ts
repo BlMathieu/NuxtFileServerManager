@@ -1,4 +1,5 @@
 import type IDirectoryResponse from "~/server/responses/IDirectoryResponse";
+import axios from "axios";
 
 export default abstract class AbstractDirectoryService {
 
@@ -7,28 +8,24 @@ export default abstract class AbstractDirectoryService {
     constructor(dir: string) { this.dirPath = dir; }
 
     public async get(path: string): Promise<IDirectoryResponse> {
-        const folders = await $fetch<IDirectoryResponse>(`${this.dirPath}/get?path=${path}`);
+        const folders = await axios<IDirectoryResponse>(`${this.dirPath}/get`, { params: { path: path } })
+            .then((response) => { return response.data })
+            .catch((err) => {
+                console.error(err);
+                return [];
+            })
         return folders
     }
 
     public async delete(path: string): Promise<void> {
-        await $fetch(`${this.dirPath}/delete`, {
-            method: 'DELETE',
-            body: JSON.stringify({ itemPath: path }),
-        });
+        await axios.delete(`${this.dirPath}/delete`, { data: { itemPath: path } }).catch((err) => { console.error(err) });
     }
 
     public async add(path: string): Promise<void> {
-        await $fetch(`${this.dirPath}/add`, {
-            method: 'POST',
-            body: JSON.stringify({ itemPath: path }),
-        });
+        await axios.post(`${this.dirPath}/add`, { itemPath: path }).catch((err) => { console.error(err) });
     }
 
     public async rename(oldPath: string, newPath: string): Promise<void> {
-        await $fetch(`/api/rename`, {
-            method: 'PATCH',
-            body: JSON.stringify({ oldPath: oldPath, newPath: newPath }),
-        });
+        await axios.patch(`/api/rename`, { oldPath: oldPath, newPath: newPath }).catch((err) => { console.error(err) });
     }
 }

@@ -1,75 +1,18 @@
-# Nuxt Minimal Starter
+# Description du projet :
+Ce projet à pour ambition de recréer un serveur de fichiers avec le farmework NUXT compatible avec les distributions Linux.
+Liste des fonctionnalités :
+ - Lire et modifier des ressources
+ - Ajouter des ressources
+ - Drag&Drop de ressources
+ - Téléchargement de ressourcess
 
-Look at the [Nuxt documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+# Initialisation du projet :
+ - Créer un fichier .env à la racine du projet 
+ - Ajouter l'argument DEFAULT_PATH
 
-## Setup
+# Environnement DEV : 
+ - npm install
+ - npm run dev
 
-Make sure to install dependencies:
+ # Envrionnement de PROD :
 
-```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
-```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
-```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
-```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.

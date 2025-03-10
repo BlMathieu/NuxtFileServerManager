@@ -22,11 +22,17 @@ const windowStore = useWindowStore();
   </Drag_DropComponent>
   <WindowComponent v-if="windowStore.createFileWindow" :title="'Créer un fichier'"
     @cancel="() => { windowStore.setCreateFileWindow(false) }" @trigger="async () => {
-      await directoryStore.createFile(newFileName);
+      if (newFileName) {
+        await directoryStore.createFile(newFileName);
+        windowStore.setCreateFileWindow(false);
+      }
     }" v-model:input="newFileName" />
   <WindowComponent v-if="windowStore.createFolderWindow" :title="'Créer un dossier'" v-model:input="newFolderName"
     @trigger="async () => {
-      await directoryStore.createFolder(newFolderName);
+      if (newFolderName) {
+        await directoryStore.createFolder(newFolderName);
+        windowStore.setCreateFolderWindow(false);
+      }
     }" @cancel="() => { windowStore.setCreateFolderWindow(false) }" />
 </template>
 
