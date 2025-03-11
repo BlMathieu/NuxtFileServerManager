@@ -21,6 +21,22 @@ const deleteItem = async () => {
     else fileService.delete(path);
     await directoryStore.findItems(directoryStore.oldPath);
 }
+const download = async () => {
+    const path = `${directoryStore.oldPath}/${props.item.name}`
+    let data;
+    if (props.item.isFolder) {
+        data = await folderService.download(path)
+    }
+    else {
+        data = await fileService.download(path);
+    }
+    const url = window.URL.createObjectURL(data);
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = props.item.name;
+        link.click();
+
+}
 </script>
 
 <template>
@@ -31,6 +47,7 @@ const deleteItem = async () => {
             <p class="item" @click="renameItem">{{ props.item.name }}</p>
         </div>
         <div class="item-bt">
+            <button class="bt-add" @click="download">Télécharger</button>
             <button class="bt-remove" @click="deleteItem">Supprimer</button>
         </div>
     </div>

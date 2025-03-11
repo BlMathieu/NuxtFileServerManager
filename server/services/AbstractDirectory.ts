@@ -20,4 +20,5 @@ export default abstract class AbstractDirectory {
         }
     };
     public get(path: string): IDirectoryResponse { throw new Error("Not implemented !"); };
+    public download(path: string): any { throw new Error("Not implemented !"); };
 }

@@ -10,24 +10,33 @@ const directoryStore = useDirectoryStore();
 const content: Ref<string> = ref("");
 const fileService = new FileService();
 
-onMounted(async () => {
-    const response = await fileService.get(`${directoryStore.oldPath}/${windowStore.textWindow.value}`) as IFileResponse;
+const getContent = async () => {
+    const response = await fileService.get(`${directoryStore.oldPath}/${windowStore.textWindow.fileName}`) as IFileResponse;
     content.value = response.content;
+}
+
+onMounted(async () => {
+    await getContent();
+});
+
+watch(windowStore.textWindow, async () => {
+    console.log('change !')
+    await getContent();
 })
 
 const cancel = () => {
-    windowStore.setTextWindow(false,'');
+    windowStore.setTextWindow(false, '');
 }
 const trigger = () => {
-    const path = `${directoryStore.oldPath}/${windowStore.textWindow.value}`;
+    const path = `${directoryStore.oldPath}/${windowStore.textWindow.fileName}`;
     fileService.save(path, content.value);
-    windowStore.setTextWindow(false,'');
+    windowStore.setTextWindow(false, '');
 }
 
 </script>
 <template>
-    <WindowComponent :title="`Contenu du fichier : ${windowStore.textWindow.value}`" v-model:input="content" @cancel="cancel"
-        @trigger="trigger">
+    <WindowComponent :title="`Contenu du fichier : ${windowStore.textWindow.fileName}`" v-model:input="content"
+        @cancel="cancel" @trigger="trigger">
         <textarea v-model="content"></textarea>
     </WindowComponent>
 </template>

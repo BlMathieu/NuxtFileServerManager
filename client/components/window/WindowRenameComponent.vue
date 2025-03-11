@@ -10,6 +10,10 @@ const directoryStore = useDirectoryStore();
 
 const newName = ref(windowStore.renameWindow.value);
 
+watch(windowStore.renameWindow,()=>{
+    newName.value = windowStore.renameWindow.value;
+});
+
 const folderService = new FolderService();
 
 const trigger = async () => {

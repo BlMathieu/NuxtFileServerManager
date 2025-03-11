@@ -9,4 +9,12 @@ export default class FileService extends AbstractDirectoryService {
             console.error(err);
         });
     }
+    async download(filePath: string): Promise<File> {
+        const data = await axios.get(`${this.dirPath}/download`, { params: { filePath: filePath }, responseType: 'blob' }).then((response) => {
+            return new File([response.data], "obj");
+        }).catch((err) => {
+            console.error(err);
+        });
+        return data as File;
+    }
 }

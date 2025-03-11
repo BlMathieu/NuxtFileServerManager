@@ -1,7 +1,7 @@
 export const useWindowStore = defineStore('window', () => {
     const createFolderWindow: Ref<boolean> = ref(false);
     const createFileWindow: Ref<boolean> = ref(false);
-    const textWindow = ref({ state: false, value: '' });
+    const textWindow = ref({ state: false, fileName: '' });
     const renameWindow = ref({ state: false, value: '' });
 
     function setCreateFolderWindow(state: boolean) {
@@ -10,13 +10,13 @@ export const useWindowStore = defineStore('window', () => {
     function setCreateFileWindow(state: boolean) {
         createFileWindow.value = state;
     }
-    function setTextWindow(state: boolean, initialValue: string) {
+    function setTextWindow(state: boolean, fileName: string) {
         textWindow.value.state = state;
-        textWindow.value.value = initialValue;
+        textWindow.value.fileName = fileName
     }
-    function setRenameWindow(state: boolean, initialValue: string) {
+    function setRenameWindow(state: boolean, itemName: string) {
         renameWindow.value.state = state;
-        renameWindow.value.value = initialValue;
+        renameWindow.value.value = itemName;
     }
     return {
         textWindow,
