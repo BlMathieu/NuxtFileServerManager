@@ -1,10 +1,10 @@
 export default class ServerService {
     constructor() { }
 
-    async sendData(files: FormData) {
+    async uploadData(files: FormData) {
 
     }
-    async getData(itemPath: string) {
+    async downloadData(itemPath: string) {
 
     }
 }

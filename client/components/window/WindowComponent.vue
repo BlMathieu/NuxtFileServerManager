@@ -1,22 +1,18 @@
 <script setup lang="ts">
 const props = defineProps(['title']);
 const emits = defineEmits(['trigger', 'cancel']);
-const input = defineModel('input');
 </script>
 
 <template>
     <section class="window">
         <div>
-            <h3>{{ title }}</h3>
+            <h3>{{ props.title }}</h3>
         </div>
         <div>
-            <div class="input-div">
-                <label for="name">{{ props.title }}</label>
-                <input v-model="input" id="name" type="text" />
-            </div>
+            <slot></slot>
             <div class="bt-div">
-                <button @click="$emit('trigger')">Confirmer</button>
-                <button @click="$emit('cancel')">Annuler</button>
+                <button class="bt-add" @click="$emit('trigger')">Confirmer</button>
+                <button class="bt-remove" @click="$emit('cancel')">Annuler</button>
             </div>
         </div>
     </section>
@@ -34,14 +30,7 @@ const input = defineModel('input');
     border: 1px black solid;
     border-radius: 0.25em;
     display: grid;
-}
-
-.input-div{
-    display: flex;
-    justify-content: center;
-}
-.input-div label{
-    margin-right:1em;
+    font-size: 20px;
 }
 
 .bt-div {

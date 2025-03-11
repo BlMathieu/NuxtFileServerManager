@@ -1,16 +1,15 @@
 <script setup lang="ts">
-import DisplayFilesComponent from './client/components/DisplayFilesComponent.vue';
+import DisplayFilesComponent from './client/components/display/DisplayItemsComponent.vue';
 import SearchBarComponent from './client/components/SearchBarComponent.vue';
 import ToolBarComponent from './client/components/ToolBarComponent.vue';
-import WindowComponent from './client/components/window/WindowComponent.vue';
 import { useWindowStore } from './client/stores/WindowStore';
-import { useDirectoryStore } from './client/stores/DirectoryStore';
 import Drag_DropComponent from './client/components/Drag_DropComponent.vue';
+import WindowCreateFileComponent from './client/components/window/WindowCreateFileComponent.vue';
+import WindowCreateFolderComponent from './client/components/window/WindowCreateFolderComponent.vue';
+import WindowRenameComponent from './client/components/window/WindowRenameComponent.vue';
+import WindowTextComponent from './client/components/window/WindowTextComponent.vue';
 
 const selectedPath: Ref<string> = ref("/");
-const newFileName: Ref<string> = ref("");
-const newFolderName: Ref<string> = ref("");
-const directoryStore = useDirectoryStore();
 const windowStore = useWindowStore();
 </script>
 
@@ -20,20 +19,10 @@ const windowStore = useWindowStore();
   <Drag_DropComponent>
     <DisplayFilesComponent :selected-path="selectedPath" />
   </Drag_DropComponent>
-  <WindowComponent v-if="windowStore.createFileWindow" :title="'Créer un fichier'"
-    @cancel="() => { windowStore.setCreateFileWindow(false) }" @trigger="async () => {
-      if (newFileName) {
-        await directoryStore.createFile(newFileName);
-        windowStore.setCreateFileWindow(false);
-      }
-    }" v-model:input="newFileName" />
-  <WindowComponent v-if="windowStore.createFolderWindow" :title="'Créer un dossier'" v-model:input="newFolderName"
-    @trigger="async () => {
-      if (newFolderName) {
-        await directoryStore.createFolder(newFolderName);
-        windowStore.setCreateFolderWindow(false);
-      }
-    }" @cancel="() => { windowStore.setCreateFolderWindow(false) }" />
+  <WindowCreateFileComponent v-if="windowStore.createFileWindow"/>
+  <WindowCreateFolderComponent v-if="windowStore.createFolderWindow"/>
+  <WindowRenameComponent v-if="windowStore.renameWindow.state"/>
+  <WindowTextComponent v-if="windowStore.textWindow.state"/>
 </template>
 
 <style>

@@ -1,11 +1,8 @@
 import type { Item } from "~/server/responses/IFolderResponse";
 import FolderService from "../services/FolderService";
 import type IFolderResponse from "~/server/responses/IFolderResponse";
-import FileService from "../services/FileService";
-import type IFileResponse from "~/server/responses/IFileResponse";
 
 const folderService = new FolderService();
-const fileService = new FileService();
 
 export const useDirectoryStore = defineStore('directory', () => {
     const oldPath: Ref<string> = ref('');
@@ -16,34 +13,7 @@ export const useDirectoryStore = defineStore('directory', () => {
         folderItems.value = response.items;
         oldPath.value = response.folderPath;
     }
-
-    async function getFileContent(folderPath: string): Promise<string> {
-        const response = await fileService.get(`${oldPath.value}/${folderPath}`) as IFileResponse;
-        return response.content;
-    }
-    async function saveFileContent(content: string): Promise<void> {
-        //fileService.save(content)
-    }
-
-    async function deleteItem(itemPath: string, isFolder: boolean) {
-        if (isFolder) await folderService.delete(`${oldPath.value}/${itemPath}`);
-        else await fileService.delete(`${oldPath.value}/${itemPath}`);
-        await findItems(oldPath.value);
-    }
-    async function createFile(filePath: string) {
-        await fileService.add(`${oldPath.value}/${filePath}`)
-        await findItems(oldPath.value);
-    }
-    async function createFolder(folderPath: string) {
-        await folderService.add(`${oldPath.value}/${folderPath}`);
-        await findItems(oldPath.value);
-    }
-    async function renameItem(oldItemPath: string, newItemPath: string) {
-        await folderService.rename(oldItemPath, newItemPath);
-        await findItems(oldPath.value);
-    }
-
     return {
-        oldPath, folderItems, findItems, deleteItem, createFile, createFolder, renameItem,
+        oldPath, folderItems, findItems,
     }
 });

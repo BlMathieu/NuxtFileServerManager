@@ -16,4 +16,9 @@ export default class FileService extends AbstractDirectory {
         const data = fs.readFileSync(path).toString();
         return { content: data };
     }
+    public save(filePath: string, content: string): void {
+        if (fs.existsSync(filePath)) {
+            fs.writeFileSync(filePath, content);
+        }
+    }
 }
