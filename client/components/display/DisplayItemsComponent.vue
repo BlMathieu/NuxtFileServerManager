@@ -1,19 +1,23 @@
 <script setup lang="ts">
+import { useMoveStore } from '~/client/stores/MoveStore';
 import { useDirectoryStore } from '../../stores/DirectoryStore';
-import { useWindowStore } from '../../stores/WindowStore';
 import ItemCardComponent from './ItemCardComponent.vue';
-
-
-const windowStore = useWindowStore();
+const moveStore = useMoveStore();
 const directoryStore = useDirectoryStore();
-
 const openFolder = async (isFolder: boolean, name: string) => {
   if (isFolder) await directoryStore.findItems(`${directoryStore.oldPath}/${name}`);
-  else windowStore.setTextWindow(true, name);
 }
 const goBack = () => {
   directoryStore.findItems(`${directoryStore.oldPath}/../`);
 }
+
+const moveItem = async (itemName:string) => {
+    const oldPath = `${directoryStore.oldPath}/${moveStore.toMove.selected}`;
+    const newPath = `${directoryStore.oldPath}/${itemName}/${moveStore.toMove.selected}`;
+    moveStore.move(oldPath, newPath);
+    await directoryStore.findItems(directoryStore.oldPath);
+}
+
 </script>
 
 <template>
@@ -26,10 +30,15 @@ const goBack = () => {
     <div v-if="(directoryStore.folderItems.length > 0 || directoryStore.oldPath != '')">
       <ul>
         <li v-if="directoryStore.oldPath != '/'" @dblclick="goBack">
-          <p>Retour</p>
+          <div>
+            <p>Retour</p>
+          </div>
+          <div>
+            <button v-if="!moveStore.toMove.btItem" @click="moveItem('../')">Déplacer</button>
+          </div>
         </li>
         <li v-for="item in directoryStore.folderItems" @dblclick="() => { openFolder(item.isFolder, item.name) }">
-          <ItemCardComponent :item="item" />
+          <ItemCardComponent :item="item" @moveItem="moveItem" />
         </li>
       </ul>
     </div>

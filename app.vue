@@ -7,7 +7,7 @@ import Drag_DropComponent from './client/components/Drag_DropComponent.vue';
 import WindowCreateFileComponent from './client/components/window/WindowCreateFileComponent.vue';
 import WindowCreateFolderComponent from './client/components/window/WindowCreateFolderComponent.vue';
 import WindowRenameComponent from './client/components/window/WindowRenameComponent.vue';
-import WindowTextComponent from './client/components/window/WindowTextComponent.vue';
+import WindowContentComponent from './client/components/window/WindowContentComponent.vue';
 
 const selectedPath: Ref<string> = ref("/");
 const windowStore = useWindowStore();
@@ -22,7 +22,7 @@ const windowStore = useWindowStore();
   <WindowCreateFileComponent v-if="windowStore.createFileWindow"/>
   <WindowCreateFolderComponent v-if="windowStore.createFolderWindow"/>
   <WindowRenameComponent v-if="windowStore.renameWindow.state"/>
-  <WindowTextComponent v-if="windowStore.textWindow.state"/>
+  <WindowContentComponent v-if="windowStore.textWindow.state"/>
 </template>
 
 <style>
@@ -41,6 +41,14 @@ html {
   border: 1px solid black;
 }
 
+.bt-open{
+  margin: 1em;
+  padding: 0.5em;
+  background-color: rgb(189, 189, 57);
+  border: none;
+  color: white;
+  font-weight: bolder;
+}
 .bt-add {
   margin: 1em;
   padding: 0.5em;
@@ -60,12 +68,14 @@ html {
 }
 
 .bt-add:hover,
-.bt-remove:hover {
+.bt-remove:hover,
+.bt-open:hover {
   background-color: rgb(203, 197, 197);
 }
 
 .bt-add:active,
-.bt-remove:active {
+.bt-remove:active,
+.bt-open:active {
   scale: 1.1;
 }
 </style>

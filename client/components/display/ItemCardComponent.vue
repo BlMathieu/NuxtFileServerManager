@@ -4,14 +4,24 @@ import { useWindowStore } from '~/client/stores/WindowStore';
 
 import FileService from '~/client/services/FileService';
 import FolderService from '~/client/services/FolderService';
+import { canOpen } from '~/server/utils/fileFormat';
+import { useMoveStore } from '~/client/stores/MoveStore';
 
 const props = defineProps(['item']);
 const windowStore = useWindowStore();
 const directoryStore = useDirectoryStore();
 const fileService = new FileService();
 const folderService = new FolderService();
+const moveStore = useMoveStore();
+const emits = defineEmits(['moveItem']);
 
-
+const openFile = () => {
+    if (!props.item.isFolder) windowStore.setTextWindow(true, props.item.name);
+}
+const isOpenable = (): boolean => {
+    const fileName = props.item.name;
+    return canOpen.some(co => fileName.includes(co));
+}
 const renameItem = () => {
     windowStore.setRenameWindow(true, props.item.name);
 }
@@ -24,18 +34,13 @@ const deleteItem = async () => {
 const download = async () => {
     const path = `${directoryStore.oldPath}/${props.item.name}`
     let data;
-    if (props.item.isFolder) {
-        data = await folderService.download(path)
-    }
-    else {
-        data = await fileService.download(path);
-    }
+    if (props.item.isFolder) data = await folderService.download(path)
+    else data = await fileService.download(path);
     const url = window.URL.createObjectURL(data);
-        const link = document.createElement('a');
-        link.href = url;
-        link.download = props.item.name;
-        link.click();
-
+    const link = document.createElement('a');
+    link.href = url;
+    link.download = props.item.name;
+    link.click();
 }
 </script>
 
@@ -47,8 +52,17 @@ const download = async () => {
             <p class="item" @click="renameItem">{{ props.item.name }}</p>
         </div>
         <div class="item-bt">
+            <button v-if="!props.item.isFolder && isOpenable()" class="bt-open" @click="openFile">Ouvrir</button>
             <button class="bt-add" @click="download">Télécharger</button>
             <button class="bt-remove" @click="deleteItem">Supprimer</button>
+
+            <button v-if="moveStore.toMove.btItem" class="bt-move"
+                @click="() => { moveStore.setSelectedItem(props.item.name); }">Déplacer</button>
+            <button v-else-if="props.item.isFolder && !moveStore.toMove.btItem" class="bt-move"
+                @click="$emit('moveItem', props.item.name)">Déplacer ici</button>
+            <button
+                v-else-if="!props.item.isFolder && !moveStore.toMove.btItem && moveStore.toMove.selected == props.item.name"
+                @click="moveStore.cancel">Annuler</button>
         </div>
     </div>
 </template>
@@ -71,5 +85,14 @@ img {
 
 div button {
     margin-left: 1em;
+}
+
+p::selection,
+img::selection {
+    columns: none;
+}
+
+.active {
+    border: solid 1px green;
 }
 </style>

@@ -4,6 +4,7 @@ import { useWindowStore } from '~/client/stores/WindowStore';
 import WindowComponent from './WindowComponent.vue';
 import type IFileResponse from '~/server/responses/IFileResponse';
 import { useDirectoryStore } from '~/client/stores/DirectoryStore';
+import { imgFormat } from '~/server/utils/fileFormat';
 
 const windowStore = useWindowStore();
 const directoryStore = useDirectoryStore();
@@ -20,7 +21,6 @@ onMounted(async () => {
 });
 
 watch(windowStore.textWindow, async () => {
-    console.log('change !')
     await getContent();
 })
 
@@ -28,30 +28,42 @@ const cancel = () => {
     windowStore.setTextWindow(false, '');
 }
 const trigger = () => {
-    const path = `${directoryStore.oldPath}/${windowStore.textWindow.fileName}`;
-    fileService.save(path, content.value);
+    if (!isImg()) {
+        const path = `${directoryStore.oldPath}/${windowStore.textWindow.fileName}`;
+        fileService.save(path, content.value);
+    }
     windowStore.setTextWindow(false, '');
 }
 
+const isImg = (): boolean => {
+    return imgFormat.some(f => windowStore.textWindow.fileName.includes(f));
+}
 </script>
 <template>
     <WindowComponent :title="`Contenu du fichier : ${windowStore.textWindow.fileName}`" v-model:input="content"
         @cancel="cancel" @trigger="trigger">
-        <textarea v-model="content"></textarea>
+        <div class="areadiv">
+            <img v-if="isImg()" :src="`data:image/jpeg;base64,${content}`">
+            <textarea v-else v-model="content" rows="10"></textarea>
+        </div>
     </WindowComponent>
 </template>
 
 <style scoped>
-.window {
-    position: absolute;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    width: 25%;
-    height: 50%;
-    background-color: rgba(255, 255, 255, 0.851);
-    border: 1px black solid;
-    border-radius: 0.25em;
-    display: grid;
+.areadiv {
+    display: flex;
+    justify-content: center;
+    margin: 2em;
+}
+
+img {
+    max-width: fit-content;
+    max-height: fit-content;
+}
+
+@media (min-width: 400px) {
+    textarea {
+        width: 400px;
+    }
 }
 </style>

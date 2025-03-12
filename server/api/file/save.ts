@@ -4,7 +4,6 @@ export default defineEventHandler(async (event) => {
     try {
         if (event.node.req.method != 'POST') throw new Error('Wrong request method !');
         const {filePath, content} = await readBody(event).then((data) => { return data });
-        console.log('file path : ' + filePath)
         const securedPath = SecurePath(filePath);
         const service = new FileService();
         service.save(securedPath, content);
