@@ -13,7 +13,13 @@ export const useDirectoryStore = defineStore('directory', () => {
         folderItems.value = response.items;
         oldPath.value = response.folderPath;
     }
+
+    function folderNumber(): number {
+        const folders = folderItems.value.filter(item => item.isFolder);
+        return folders.length;
+    }
+
     return {
-        oldPath, folderItems, findItems,
+        oldPath, folderItems, findItems, folderNumber,
     }
 });

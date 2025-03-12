@@ -24,6 +24,9 @@ const sendFiles = async () => {
         formData.append('files', file)
     })
 
+    const itemPath = `${directoryStore.oldPath}`;
+    formData.append('itemPath', itemPath);
+    
     await axios.post("/api/upload", formData, {
         onUploadProgress: (progressEvent: any) => {
             const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
@@ -33,7 +36,7 @@ const sendFiles = async () => {
         console.error(err);
     });
 
-    directoryStore.findItems(directoryStore.oldPath);
+    await directoryStore.findItems(directoryStore.oldPath);
     files.value = [];
 }
 </script>

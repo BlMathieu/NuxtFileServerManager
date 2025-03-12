@@ -2,41 +2,31 @@
 import { useMoveStore } from '~/client/stores/MoveStore';
 import { useDirectoryStore } from '../../stores/DirectoryStore';
 import ItemCardComponent from './ItemCardComponent.vue';
+import BackCardComponenet from './BackCardComponenet.vue';
 const moveStore = useMoveStore();
 const directoryStore = useDirectoryStore();
+
 const openFolder = async (isFolder: boolean, name: string) => {
   if (isFolder) await directoryStore.findItems(`${directoryStore.oldPath}/${name}`);
 }
-const goBack = () => {
-  directoryStore.findItems(`${directoryStore.oldPath}/../`);
-}
 
-const moveItem = async (itemName:string) => {
-    const oldPath = `${directoryStore.oldPath}/${moveStore.toMove.selected}`;
-    const newPath = `${directoryStore.oldPath}/${itemName}/${moveStore.toMove.selected}`;
-    moveStore.move(oldPath, newPath);
-    await directoryStore.findItems(directoryStore.oldPath);
+const moveItem = async (itemName: string) => {
+  const oldPath = `${directoryStore.oldPath}/${moveStore.toMove.selected}`;
+  const newPath = `${directoryStore.oldPath}/${itemName}/${moveStore.toMove.selected}`;
+  moveStore.move(oldPath, newPath);
+  await directoryStore.findItems(directoryStore.oldPath);
 }
 
 </script>
 
 <template>
   <section>
-
     <div class="path-information">
       <p>Chemin : {{ directoryStore.oldPath }}</p>
     </div>
-
     <div v-if="(directoryStore.folderItems.length > 0 || directoryStore.oldPath != '')">
       <ul>
-        <li v-if="directoryStore.oldPath != '/'" @dblclick="goBack">
-          <div>
-            <p>Retour</p>
-          </div>
-          <div>
-            <button v-if="!moveStore.toMove.btItem" @click="moveItem('../')">Déplacer</button>
-          </div>
-        </li>
+        <BackCardComponenet v-if="directoryStore.oldPath != '/'" @moveItem="moveItem" />
         <li v-for="item in directoryStore.folderItems" @dblclick="() => { openFolder(item.isFolder, item.name) }">
           <ItemCardComponent :item="item" @moveItem="moveItem" />
         </li>

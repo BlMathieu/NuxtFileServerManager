@@ -41,6 +41,15 @@ html {
   border: 1px solid black;
 }
 
+.bt-move{
+  margin: 1em;
+  padding: 0.5em;
+  background-color: rgb(21, 85, 223);
+  border: none;
+  color: white;
+  font-weight: bolder;
+}
+
 .bt-open{
   margin: 1em;
   padding: 0.5em;
@@ -67,15 +76,22 @@ html {
   font-weight: bolder;
 }
 
+.bt-move:hover,
 .bt-add:hover,
 .bt-remove:hover,
 .bt-open:hover {
   background-color: rgb(203, 197, 197);
 }
 
+.bt-move:active,
 .bt-add:active,
 .bt-remove:active,
 .bt-open:active {
   scale: 1.1;
+}
+
+p::selection,
+img::selection {
+    columns: none;
 }
 </style>

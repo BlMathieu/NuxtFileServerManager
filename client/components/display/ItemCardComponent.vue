@@ -15,13 +15,21 @@ const folderService = new FolderService();
 const moveStore = useMoveStore();
 const emits = defineEmits(['moveItem']);
 
-const openFile = () => {
-    if (!props.item.isFolder) windowStore.setTextWindow(true, props.item.name);
-}
+
 const isOpenable = (): boolean => {
     const fileName = props.item.name;
     return canOpen.some(co => fileName.includes(co));
 }
+const canMove = () => {
+    if (!props.item.isFolder && directoryStore.folderNumber() > 0) return true;
+    else if (props.item.isFolder && (directoryStore.folderNumber() > 1 || directoryStore.oldPath != '/')) return true;
+    return false;
+}
+
+const openFile = () => {
+    if (!props.item.isFolder) windowStore.setTextWindow(true, props.item.name);
+}
+
 const renameItem = () => {
     windowStore.setRenameWindow(true, props.item.name);
 }
@@ -50,19 +58,24 @@ const download = async () => {
             <img v-if="props.item.isFolder" src="/client/assets/folder.svg" alt="folder" />
             <img v-else src="/client/assets/file.svg" alt="file" />
             <p class="item" @click="renameItem">{{ props.item.name }}</p>
-        </div>
-        <div class="item-bt">
-            <button v-if="!props.item.isFolder && isOpenable()" class="bt-open" @click="openFile">Ouvrir</button>
-            <button class="bt-add" @click="download">Télécharger</button>
-            <button class="bt-remove" @click="deleteItem">Supprimer</button>
 
-            <button v-if="moveStore.toMove.btItem" class="bt-move"
+            <div class="item-bt">
+                <button v-if="!props.item.isFolder && isOpenable()" class="bt-open" @click="openFile">Ouvrir</button>
+                <button class="bt-add" @click="download">Télécharger</button>
+            </div>
+        </div>
+
+        <div>
+            <button v-if="moveStore.toMove.btItem && canMove()" class="bt-move"
                 @click="() => { moveStore.setSelectedItem(props.item.name); }">Déplacer</button>
-            <button v-else-if="props.item.isFolder && !moveStore.toMove.btItem" class="bt-move"
-                @click="$emit('moveItem', props.item.name)">Déplacer ici</button>
+
             <button
-                v-else-if="!props.item.isFolder && !moveStore.toMove.btItem && moveStore.toMove.selected == props.item.name"
+                v-else-if="props.item.isFolder && !moveStore.toMove.btItem && props.item.name != moveStore.toMove.selected"
+                class="bt-move" @click="$emit('moveItem', props.item.name)">Déplacer ici</button>
+            <button v-else-if="!moveStore.toMove.btItem && moveStore.toMove.selected == props.item.name" class="bt-move"
                 @click="moveStore.cancel">Annuler</button>
+
+            <button class="bt-remove" @click="deleteItem">Supprimer</button>
         </div>
     </div>
 </template>
@@ -75,6 +88,7 @@ img {
 
 .item-global {
     display: flex;
+    justify-content: space-between;
 }
 
 .item-info {
@@ -87,12 +101,11 @@ div button {
     margin-left: 1em;
 }
 
-p::selection,
-img::selection {
-    columns: none;
-}
-
 .active {
     border: solid 1px green;
+}
+
+.item-bt {
+    margin-left: 1em;
 }
 </style>
