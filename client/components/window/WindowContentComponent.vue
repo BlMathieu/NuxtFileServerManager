@@ -9,6 +9,11 @@ const directoryStore = useDirectoryStore();
 const content: Ref<string> = ref("");
 const fileService = new FileService();
 
+const config = useRuntimeConfig();
+const serverAddress = config.public.SERVER_IP as string;
+const serverPort = config.public.PORT as string;
+const server = `${serverAddress}:${serverPort}`;
+
 const getContent = async () => {
     const response = await fileService.get(`${directoryStore.oldPath}/${windowStore.textWindow.fileName}`);
     content.value = response;
@@ -42,7 +47,7 @@ const isTxt = (): boolean => { return windowStore.textWindow.fileName.includes('
         <div class="areadiv">
             <textarea v-if="isTxt()" v-model="content" rows="10"></textarea>
             <embed v-else
-                :src="`http://localhost:3000/api/file/get?path=${directoryStore.oldPath}/${windowStore.textWindow.fileName}`">
+                :src="`${server}/api/file/get?path=${directoryStore.oldPath}/${windowStore.textWindow.fileName}`">
         </div>
     </WindowComponent>
 </template>

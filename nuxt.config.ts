@@ -2,6 +2,10 @@
 export default defineNuxtConfig({
   runtimeConfig:{
     DEFAULT_PATH : process.env.DEFAULT_PATH,
+    public:{
+      SERVER_IP: process.env.SERVER_IP,
+      PORT: process.env.PORT,
+    }
   },
   compatibilityDate: '2024-11-01',
   devtools: { enabled: true },

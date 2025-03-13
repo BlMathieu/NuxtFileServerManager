@@ -2,6 +2,11 @@
 import { useDirectoryStore } from '../stores/DirectoryStore';
 const selectedPath = defineModel('selectedPath');
 const folderStore = useDirectoryStore();
+
+onMounted(async () => {
+    await folderStore.findItems('/');
+})
+
 </script>
 
 <template>
@@ -32,11 +37,11 @@ form input[type="text"] {
 }
 
 form button {
-  height: 60px;
-  width: 50px;
+    height: 60px;
+    width: 50px;
 }
 
 form button img {
-  width: 15px;
+    width: 15px;
 }
 </style>
