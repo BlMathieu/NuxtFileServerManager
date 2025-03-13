@@ -38,7 +38,7 @@ export default class FolderService extends AbstractDirectory {
         }
     }
 
-    public override download(path: string) {
+    public download(path: string) {
         if (!fs.existsSync(path)) throw new Error("Folder does not exists !");
         const zip = archiver('zip', {
             zlib: { level: 9 }

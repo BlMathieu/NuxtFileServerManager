@@ -1,4 +1,3 @@
-import type IDirectoryResponse from "~/server/responses/IDirectoryResponse";
 import axios from "axios";
 
 export default abstract class AbstractDirectoryService {
@@ -7,14 +6,14 @@ export default abstract class AbstractDirectoryService {
 
     constructor(dir: string) { this.dirPath = dir; }
 
-    public async get(path: string): Promise<IDirectoryResponse> {
-        const folders = await axios<IDirectoryResponse>(`${this.dirPath}/get`, { params: { path: path } })
+    public async get(path: string): Promise<any> {
+        const items = await axios(`${this.dirPath}/get`, { params: { path: path } })
             .then((response) => { return response.data })
             .catch((err) => {
                 console.error(err);
                 return [];
             })
-        return folders
+        return items
     }
 
     public delete(path: string): void {

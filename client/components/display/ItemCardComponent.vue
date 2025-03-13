@@ -4,7 +4,6 @@ import { useWindowStore } from '~/client/stores/WindowStore';
 
 import FileService from '~/client/services/FileService';
 import FolderService from '~/client/services/FolderService';
-import { canOpen } from '~/server/utils/fileFormat';
 import { useMoveStore } from '~/client/stores/MoveStore';
 
 const props = defineProps(['item']);
@@ -15,11 +14,6 @@ const folderService = new FolderService();
 const moveStore = useMoveStore();
 const emits = defineEmits(['moveItem']);
 
-
-const isOpenable = (): boolean => {
-    const fileName = props.item.name;
-    return canOpen.some(co => fileName.includes(co));
-}
 const canMove = () => {
     if (!props.item.isFolder && directoryStore.folderNumber() > 0) return true;
     else if (props.item.isFolder && (directoryStore.folderNumber() > 1 || directoryStore.oldPath != '/')) return true;
@@ -60,7 +54,7 @@ const download = async () => {
             <p class="item" @click="renameItem">{{ props.item.name }}</p>
 
             <div class="item-bt">
-                <button v-if="!props.item.isFolder && isOpenable()" class="bt-open" @click="openFile">Ouvrir</button>
+                <button v-if="!props.item.isFolder" class="bt-open" @click="openFile">Ouvrir</button>
                 <button class="bt-add" @click="download">Télécharger</button>
             </div>
         </div>

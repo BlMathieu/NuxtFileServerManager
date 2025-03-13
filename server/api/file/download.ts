@@ -7,11 +7,11 @@ export default defineEventHandler((event) => {
         const filePath = getQuery(event).filePath?.toString() || "";
         const securedPath = SecurePath(filePath);
         const service = new FileService();
-        const data = service.download(securedPath);
+        const content = service.get(securedPath);
         const fileName = path.basename(securedPath);
         event.node.res.setHeader('Content-Disposition', `attachment; filename=${fileName}`);
         event.node.res.setHeader('Content-Type', 'application/octet-stream');
-        return sendStream(event, data);
+        return sendStream(event, content);
     } catch (err: any) {
         console.error(err);
         throw createError({ statusCode: 500, statusMessage: err.message })

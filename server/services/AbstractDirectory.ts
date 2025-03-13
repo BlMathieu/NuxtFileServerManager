@@ -9,6 +9,7 @@ export default abstract class AbstractDirectory {
         const config = useRuntimeConfig();
         this.baseUrl = config.DEFAULT_PATH;
     }
+    public get(path: string): IDirectoryResponse { throw new Error("Not implemented !"); };
     public add(path: string): void { throw new Error("Not implemented !"); };
     public delete(path: string): void { throw new Error("Not implemented !"); };
     public rename(oldPath: string, newPath: string): void {
@@ -19,6 +20,5 @@ export default abstract class AbstractDirectory {
             throw err;
         }
     };
-    public get(path: string): IDirectoryResponse { throw new Error("Not implemented !"); };
-    public download(path: string): any { throw new Error("Not implemented !"); };
+
 }

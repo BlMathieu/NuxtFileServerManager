@@ -3,7 +3,6 @@ import DisplayFilesComponent from './client/components/display/DisplayItemsCompo
 import SearchBarComponent from './client/components/SearchBarComponent.vue';
 import ToolBarComponent from './client/components/ToolBarComponent.vue';
 import { useWindowStore } from './client/stores/WindowStore';
-import Drag_DropComponent from './client/components/Drag_DropComponent.vue';
 import WindowCreateFileComponent from './client/components/window/WindowCreateFileComponent.vue';
 import WindowCreateFolderComponent from './client/components/window/WindowCreateFolderComponent.vue';
 import WindowRenameComponent from './client/components/window/WindowRenameComponent.vue';
@@ -16,13 +15,11 @@ const windowStore = useWindowStore();
 <template>
   <SearchBarComponent v-model:selected-path="selectedPath" />
   <ToolBarComponent />
-  <Drag_DropComponent>
-    <DisplayFilesComponent :selected-path="selectedPath" />
-  </Drag_DropComponent>
-  <WindowCreateFileComponent v-if="windowStore.createFileWindow"/>
-  <WindowCreateFolderComponent v-if="windowStore.createFolderWindow"/>
-  <WindowRenameComponent v-if="windowStore.renameWindow.state"/>
-  <WindowContentComponent v-if="windowStore.textWindow.state"/>
+  <DisplayFilesComponent :selected-path="selectedPath" />
+  <WindowCreateFileComponent v-if="windowStore.createFileWindow" />
+  <WindowCreateFolderComponent v-if="windowStore.createFolderWindow" />
+  <WindowRenameComponent v-if="windowStore.renameWindow.state" />
+  <WindowContentComponent v-if="windowStore.textWindow.state" />
 </template>
 
 <style>
@@ -41,7 +38,7 @@ html {
   border: 1px solid black;
 }
 
-.bt-move{
+.bt-move {
   margin: 1em;
   padding: 0.5em;
   background-color: rgb(21, 85, 223);
@@ -50,7 +47,7 @@ html {
   font-weight: bolder;
 }
 
-.bt-open{
+.bt-open {
   margin: 1em;
   padding: 0.5em;
   background-color: rgb(189, 189, 57);
@@ -58,6 +55,7 @@ html {
   color: white;
   font-weight: bolder;
 }
+
 .bt-add {
   margin: 1em;
   padding: 0.5em;
@@ -92,6 +90,6 @@ html {
 
 p::selection,
 img::selection {
-    columns: none;
+  columns: none;
 }
 </style>

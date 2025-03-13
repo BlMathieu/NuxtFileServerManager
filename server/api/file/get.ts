@@ -6,8 +6,8 @@ export default defineEventHandler((event) => {
         const filePath = getQuery(event).path?.toString() || "";
         const securedPath = SecurePath(filePath);
         const service = new FileService();
-        const data = service.get(securedPath);
-        return data;
+        const content = service.get(securedPath);
+        return content;
     } catch (err: any) {
         console.error(err);
         throw createError({ statusCode: 500, statusMessage: err.message })

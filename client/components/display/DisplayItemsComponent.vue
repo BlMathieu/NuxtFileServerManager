@@ -3,6 +3,8 @@ import { useMoveStore } from '~/client/stores/MoveStore';
 import { useDirectoryStore } from '../../stores/DirectoryStore';
 import ItemCardComponent from './ItemCardComponent.vue';
 import BackCardComponenet from './BackCardComponenet.vue';
+import Drag_DropComponent from '../Drag_DropComponent.vue';
+
 const moveStore = useMoveStore();
 const directoryStore = useDirectoryStore();
 
@@ -24,14 +26,16 @@ const moveItem = async (itemName: string) => {
     <div class="path-information">
       <p>Chemin : {{ directoryStore.oldPath }}</p>
     </div>
-    <div v-if="(directoryStore.folderItems.length > 0 || directoryStore.oldPath != '')">
-      <ul>
-        <BackCardComponenet v-if="directoryStore.oldPath != '/'" @moveItem="moveItem" />
-        <li v-for="item in directoryStore.folderItems" @dblclick="() => { openFolder(item.isFolder, item.name) }">
-          <ItemCardComponent :item="item" @moveItem="moveItem" />
-        </li>
-      </ul>
-    </div>
+    <Drag_DropComponent>
+      <div v-if="(directoryStore.folderItems.length > 0 || directoryStore.oldPath != '')">
+        <ul>
+          <BackCardComponenet v-if="directoryStore.oldPath != '/'" @moveItem="moveItem" />
+          <li v-for="item in directoryStore.folderItems" @dblclick="() => { openFolder(item.isFolder, item.name) }">
+            <ItemCardComponent :item="item" @moveItem="moveItem" />
+          </li>
+        </ul>
+      </div>
+    </Drag_DropComponent>
   </section>
 </template>
 
@@ -40,7 +44,7 @@ ul {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
   font-size: 25px;
-  height: 50vh;
+  max-height: 50vh;
   overflow-y: scroll;
 }
 

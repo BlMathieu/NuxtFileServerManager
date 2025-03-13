@@ -4,10 +4,16 @@ import { useDirectoryStore } from '../stores/DirectoryStore';
 
 const files: Ref<File[]> = ref([]);
 const progressBar: Ref<number> = ref(0);
+const isDrag = ref(false);
+
+const dragSwitch = () => {
+    isDrag.value = !isDrag.value;
+}
 
 const directoryStore = useDirectoryStore();
 const handleFiles = (event: any) => {
     event.preventDefault();
+    isDrag.value = false;
     files.value = event.dataTransfer.files;
     progressBar.value = 0;
 }
@@ -22,11 +28,10 @@ const sendFiles = async () => {
     const arrayFiles = [...files.value];
     arrayFiles.forEach(file => {
         formData.append('files', file)
-    })
+    });
 
     const itemPath = `${directoryStore.oldPath}`;
     formData.append('itemPath', itemPath);
-    
     await axios.post("/api/upload", formData, {
         onUploadProgress: (progressEvent: any) => {
             const totalLength = progressEvent.lengthComputable ? progressEvent.total : progressEvent.target.getResponseHeader('content-length') || progressEvent.target.getResponseHeader('x-decompressed-content-length');
@@ -42,7 +47,8 @@ const sendFiles = async () => {
 </script>
 
 <template>
-    <div class="draggable" @dragover.prevent @drop="handleFiles">
+    <div :class="{ 'draggable': isDrag }" @dragenter="dragSwitch" @dragleave="dragSwitch" @dragover.prevent
+        @drop="handleFiles">
         <slot></slot>
     </div>
     <div class="upload" v-if="files.length > 0">
@@ -105,5 +111,10 @@ img {
 
 .file-name {
     color: white;
+}
+
+.draggable {
+    background-color: rgb(148, 236, 148);
+    border: 1px dashed green;
 }
 </style>
