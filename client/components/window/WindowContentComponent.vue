@@ -30,10 +30,10 @@ watch(windowStore.textWindow, async () => {
 const cancel = () => {
     windowStore.setTextWindow(false, '');
 }
-const trigger = () => {
+const trigger = async() => {
     if (isTxt()) {
         const path = `${directoryStore.oldPath}/${windowStore.textWindow.fileName}`;
-        fileService.save(path, content.value);
+        await fileService.save(path, content.value);
     }
     windowStore.setTextWindow(false, '');
 }

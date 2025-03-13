@@ -15,7 +15,7 @@ const cancel = () => {
 const trigger = async () => {
     if (folderName.value) {
         const path = `${directoryStore.oldPath}/${folderName.value}`;
-        folderService.add(path);
+        await folderService.add(path);
         await directoryStore.findItems(directoryStore.oldPath);
         windowStore.setCreateFolderWindow(false);
     }

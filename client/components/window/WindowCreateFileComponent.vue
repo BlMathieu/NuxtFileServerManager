@@ -16,7 +16,7 @@ const cancel = () => {
 const trigger = async () => {
     if (fileName.value) {
         const path = `${directoryStore.oldPath}/${fileName.value}`;
-        fileService.add(path);
+        await fileService.add(path);
         await directoryStore.findItems(directoryStore.oldPath);
         windowStore.setCreateFileWindow(false);
     }

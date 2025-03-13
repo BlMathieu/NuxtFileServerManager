@@ -13,7 +13,7 @@ const folderService = new FolderService();
 const trigger = async () => {
     const path = `${directoryStore.oldPath}/${windowStore.deleteWindow.item.name}`;
     if (windowStore.deleteWindow.item.isFolder) folderService.delete(path);
-    else fileService.delete(path);
+    else await fileService.delete(path);
     await directoryStore.findItems(directoryStore.oldPath);
     windowStore.deleteWindow.state = false;
 }

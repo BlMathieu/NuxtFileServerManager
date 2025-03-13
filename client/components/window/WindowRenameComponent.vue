@@ -19,7 +19,7 @@ const folderService = new FolderService();
 const trigger = async () => {
     const oldPath = `${directoryStore.oldPath}/${windowStore.renameWindow.value}`;
     const newPath = `${directoryStore.oldPath}/${newName.value}`;
-    folderService.rename(oldPath, newPath)
+    await folderService.rename(oldPath, newPath)
     await directoryStore.findItems(directoryStore.oldPath);
     windowStore.setRenameWindow(false, '');
 }
