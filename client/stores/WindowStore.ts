@@ -1,9 +1,11 @@
+import type { Item } from "~/server/responses/IFolderResponse";
+
 export const useWindowStore = defineStore('window', () => {
     const createFolderWindow: Ref<boolean> = ref(false);
     const createFileWindow: Ref<boolean> = ref(false);
     const textWindow = ref({ state: false, fileName: '' });
     const renameWindow = ref({ state: false, value: '' });
-
+    const deleteWindow = ref({ state: false, item: { name: '', isFolder: false } });
     function setCreateFolderWindow(state: boolean) {
         createFolderWindow.value = state;
     }
@@ -18,14 +20,20 @@ export const useWindowStore = defineStore('window', () => {
         renameWindow.value.state = state;
         renameWindow.value.value = itemName;
     }
+    function setDeleteWindow(state: boolean, item: Item) {
+        deleteWindow.value.state = state;
+        deleteWindow.value.item = item;
+    }
     return {
         textWindow,
         renameWindow,
+        deleteWindow,
         createFileWindow,
         createFolderWindow,
         setCreateFileWindow,
         setCreateFolderWindow,
         setRenameWindow,
+        setDeleteWindow,
         setTextWindow,
     };
 });

@@ -7,6 +7,7 @@ import WindowCreateFileComponent from './client/components/window/WindowCreateFi
 import WindowCreateFolderComponent from './client/components/window/WindowCreateFolderComponent.vue';
 import WindowRenameComponent from './client/components/window/WindowRenameComponent.vue';
 import WindowContentComponent from './client/components/window/WindowContentComponent.vue';
+import WindowDeleteComponent from './client/components/window/WindowDeleteComponent.vue';
 
 const selectedPath: Ref<string> = ref("/");
 const windowStore = useWindowStore();
@@ -14,12 +15,14 @@ const windowStore = useWindowStore();
 
 <template>
   <SearchBarComponent v-model:selected-path="selectedPath" />
-  <ToolBarComponent />
+  <ToolBarComponent/>
   <DisplayFilesComponent :selected-path="selectedPath" />
   <WindowCreateFileComponent v-if="windowStore.createFileWindow" />
   <WindowCreateFolderComponent v-if="windowStore.createFolderWindow" />
   <WindowRenameComponent v-if="windowStore.renameWindow.state" />
   <WindowContentComponent v-if="windowStore.textWindow.state" />
+  <WindowDeleteComponent v-if="windowStore.deleteWindow.state"/>
+
 </template>
 
 <style>
@@ -29,7 +32,7 @@ html * {
 }
 
 html {
-  background-image: url('Cloudy.svg');
+  background-image: url('./client/assets/Cloudy.svg');
   background-size: 100%;
   background-repeat: no-repeat;
 }

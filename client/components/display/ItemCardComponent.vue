@@ -14,6 +14,8 @@ const folderService = new FolderService();
 const moveStore = useMoveStore();
 const emits = defineEmits(['moveItem']);
 
+const displayDelete = ref(false);
+
 const canMove = () => {
     if (!props.item.isFolder && directoryStore.folderNumber() > 0) return true;
     else if (props.item.isFolder && (directoryStore.folderNumber() > 1 || directoryStore.oldPath != '/')) return true;
@@ -27,12 +29,7 @@ const openFile = () => {
 const renameItem = () => {
     windowStore.setRenameWindow(true, props.item.name);
 }
-const deleteItem = async () => {
-    const path = `${directoryStore.oldPath}/${props.item.name}`;
-    if (props.item.isFolder) folderService.delete(path);
-    else fileService.delete(path);
-    await directoryStore.findItems(directoryStore.oldPath);
-}
+
 const download = async () => {
     const path = `${directoryStore.oldPath}/${props.item.name}`
     let data;
@@ -69,7 +66,7 @@ const download = async () => {
             <button v-else-if="!moveStore.toMove.btItem && moveStore.toMove.selected == props.item.name" class="bt-move"
                 @click="moveStore.cancel">Annuler</button>
 
-            <button class="bt-remove" @click="deleteItem">Supprimer</button>
+            <button class="bt-remove" @click="()=>{windowStore.setDeleteWindow(true, props.item)}">Supprimer</button>
         </div>
     </div>
 </template>
