@@ -8,12 +8,14 @@ import WindowCreateFolderComponent from './client/components/window/WindowCreate
 import WindowRenameComponent from './client/components/window/WindowRenameComponent.vue';
 import WindowContentComponent from './client/components/window/WindowContentComponent.vue';
 import WindowDeleteComponent from './client/components/window/WindowDeleteComponent.vue';
+import MigrationComponent from './client/components/MigrationComponent.vue';
 
 const selectedPath: Ref<string> = ref("/");
 const windowStore = useWindowStore();
 </script>
 
 <template>
+  <MigrationComponent/>
   <SearchBarComponent v-model:selected-path="selectedPath" />
   <ToolBarComponent/>
   <DisplayFilesComponent :selected-path="selectedPath" />
@@ -53,7 +55,7 @@ html {
 .bt-open {
   margin: 1em;
   padding: 0.5em;
-  background-color: rgb(189, 189, 57);
+  background-color: rgb(145, 145, 0);
   border: none;
   color: white;
   font-weight: bolder;

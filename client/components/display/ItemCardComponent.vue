@@ -14,8 +14,6 @@ const folderService = new FolderService();
 const moveStore = useMoveStore();
 const emits = defineEmits(['moveItem']);
 
-const displayDelete = ref(false);
-
 const canMove = () => {
     if (!props.item.isFolder && directoryStore.folderNumber() > 0) return true;
     else if (props.item.isFolder && (directoryStore.folderNumber() > 1 || directoryStore.oldPath != '/')) return true;
@@ -56,7 +54,7 @@ const download = async () => {
             </div>
         </div>
 
-        <div>
+        <div class="item-bt">
             <button v-if="moveStore.toMove.btItem && canMove()" class="bt-move"
                 @click="() => { moveStore.setSelectedItem(props.item.name); }">Déplacer</button>
 
@@ -66,7 +64,7 @@ const download = async () => {
             <button v-else-if="!moveStore.toMove.btItem && moveStore.toMove.selected == props.item.name" class="bt-move"
                 @click="moveStore.cancel">Annuler</button>
 
-            <button class="bt-remove" @click="()=>{windowStore.setDeleteWindow(true, props.item)}">Supprimer</button>
+            <button class="bt-remove" @click="() => { windowStore.setDeleteWindow(true, props.item) }">Supprimer</button>
         </div>
     </div>
 </template>
@@ -98,5 +96,6 @@ div button {
 
 .item-bt {
     margin-left: 1em;
+    display: flex;
 }
 </style>

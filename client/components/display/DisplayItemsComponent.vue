@@ -67,6 +67,7 @@ li {
   text-align: center;
   color: rgb(84, 255, 22);
   font-size: 20px;
+  background-color: green;
   font-weight: bold;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }

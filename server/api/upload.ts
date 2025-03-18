@@ -8,6 +8,8 @@ export default defineEventHandler(async (event) => {
         const files = data.getAll('files');
         const itemPath = data.get('itemPath') as string;
 
+        if(!itemPath) throw new Error("Item path cannot be null !");
+
         const securedPath = SecurePath(itemPath);
 
         files.forEach(async (file: any) => {

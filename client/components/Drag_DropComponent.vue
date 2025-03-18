@@ -54,7 +54,7 @@ const sendFiles = async () => {
     <div class="upload" v-if="files.length > 0">
         <div class="files">
             <div v-for="file in files">
-                <img src="/client/assets/upload.svg" />
+                <img src="/client/assets/download.svg" />
                 <p class="file-name">{{ file.name }}</p>
                 <button class="bt-remove" @click="() => { deleteFile(file) }">Supprimer</button>
             </div>
