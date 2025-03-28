@@ -40,6 +40,11 @@ const moveItem = async (itemName: string) => {
 </template>
 
 <style scoped>
+section{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 ul {
   border-top: 2px solid black;
   border-bottom: 2px solid black;
@@ -64,6 +69,7 @@ li {
 }
 
 .path-information {
+  min-width: 100%;
   text-align: center;
   color: rgb(84, 255, 22);
   font-size: 20px;
@@ -71,7 +77,9 @@ li {
   font-weight: bold;
   font-family: 'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;
 }
-
+.content{
+  min-width: 100%;
+}
 p::selection,
 img::selection {
   columns: none;

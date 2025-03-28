@@ -49,7 +49,7 @@ const download = async () => {
             <p class="item" @click="renameItem">{{ props.item.name }}</p>
 
             <div class="item-bt">
-                <button v-if="!props.item.isFolder" class="bt-open" @click="openFile">Ouvrir</button>
+                <button v-if="!props.item.isFolder && !props.item.name.includes('.pdf')" class="bt-open" @click="openFile">Ouvrir</button>
                 <button class="bt-add" @click="download">Télécharger</button>
             </div>
         </div>

@@ -1,5 +1,10 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+  nitro: {
+    experimental: {
+      websocket: true
+    }
+  },
   runtimeConfig: {
     DEFAULT_PATH: process.env.DEFAULT_PATH,
     BACKUP_PATH: process.env.BACKUP_PATH,

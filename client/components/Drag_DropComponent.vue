@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import axios from 'axios';
 import { useDirectoryStore } from '../stores/DirectoryStore';
+import { useUploadStore } from '../stores/UploadStore';
 
-const files: Ref<File[]> = ref([]);
+const uploadStore = useUploadStore();
 const progressBar: Ref<number> = ref(0);
 const isDrag = ref(false);
 
@@ -14,18 +15,16 @@ const directoryStore = useDirectoryStore();
 const handleFiles = (event: any) => {
     event.preventDefault();
     isDrag.value = false;
-    files.value = event.dataTransfer.files;
+    const files:FileList = event.dataTransfer.files;
+    Array.from(files).forEach((file: File) => {
+        uploadStore.addFile(file);
+    })
     progressBar.value = 0;
-}
-
-const deleteFile = (file: File) => {
-    const arrayFiles = [...files.value];
-    files.value = arrayFiles.filter((f) => f.name !== file.name);
 }
 
 const sendFiles = async () => {
     const formData = new FormData();
-    const arrayFiles = [...files.value];
+    const arrayFiles = [...uploadStore.files];
     arrayFiles.forEach(file => {
         formData.append('files', file)
     });
@@ -40,40 +39,47 @@ const sendFiles = async () => {
     }).catch((err) => {
         console.error(err);
     });
-
     await directoryStore.findItems(directoryStore.oldPath);
-    files.value = [];
+    uploadStore.setFiles([]);
 }
 </script>
 
 <template>
-    <div :class="{ 'draggable': isDrag }" @dragenter="dragSwitch" @dragleave="dragSwitch" @dragover.prevent
+    <div :class="`content ${{ 'draggable': isDrag }}`" @dragenter="dragSwitch" @dragleave="dragSwitch" @dragover.prevent
         @drop="handleFiles">
         <slot></slot>
     </div>
-    <div class="upload" v-if="files.length > 0">
-        <div class="files">
-            <div v-for="file in files">
-                <img src="/client/assets/download.svg" />
-                <p class="file-name">{{ file.name }}</p>
-                <button class="bt-remove" @click="() => { deleteFile(file) }">Supprimer</button>
-            </div>
-        </div>
-        <div>
-            <div>
-                <h3>Fichiers à télécharger</h3>
-                <button class="bt-add" @click="sendFiles">Envoyer</button>
-            </div>
-            <div>
-                <progress :value="progressBar" max="100"></progress>
-                <p>{{ progressBar }}%</p>
-            </div>
 
+    <div v-if="uploadStore.files.length > 0" class="upload">
+        <div>
+            <h3>Fichiers à télécharger</h3>
+            <div class="files">
+                <div v-for="file in uploadStore.files">
+                    <img src="/client/assets/download.svg" />
+                    <p class="file-name">{{ file.name }}</p>
+                    <button class="bt-remove" @click="() => { uploadStore.deleteFile(file) }">Supprimer</button>
+                </div>
+            </div>
+            <div>
+                <div>
+                    <button class="bt-add" @click="sendFiles">Envoyer</button>
+                </div>
+                <div>
+                    <progress :value="progressBar" max="100"></progress>
+                    <p>{{ progressBar }}%</p>
+                </div>
+            </div>
         </div>
     </div>
 </template>
 
 <style scoped>
+h3 {
+    color: white;
+}
+.content {
+    min-width: 100%;
+}
 .files {
     display: flex;
     justify-content: space-evenly;
@@ -111,6 +117,8 @@ img {
 
 .file-name {
     color: white;
+    max-width: 60px;
+    overflow:hidden;
 }
 
 .draggable {

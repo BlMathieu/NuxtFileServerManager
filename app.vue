@@ -31,6 +31,7 @@ const windowStore = useWindowStore();
 html * {
   margin: 0;
   padding: 0;
+  font-family: 'Courier New', Courier, monospace;
 }
 
 html {
